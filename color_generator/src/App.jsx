@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../src/index.css'
 
 const App = () => {
@@ -15,15 +15,26 @@ const App = () => {
     for(let i =0; i<6; i++){
       hexColor += hex[randomColorUtility(hex.length)]
     }
-    console.log(hexColor)
+    setColor(hexColor)
   }
   function handleCreateRandomRgbColor(){
-
+    const r = randomColorUtility(256);  
+    const g = randomColorUtility(256);  
+    const b = randomColorUtility(256);
+    
+    setColor(`rgb(${r},${g},${b})`)
+  
   }
+
+  useEffect(()=>{
+    if(typeOfColor === "rgb")handleCreateRandomRgbColor();
+    else handleCreateRandomHexColor;
+
+  }, [typeOfColor])
   return (
     <div>
 
-      <div className='Container' style={{
+      <div style={{
         width:"100vw",
         height:"100vh",
         background: color
@@ -34,6 +45,21 @@ const App = () => {
           <button onClick={typeOfColor === "hex" ? 
           handleCreateRandomHexColor : handleCreateRandomRgbColor}
           >Generate Random Color</button>
+        </div>
+
+        <div
+        style={{
+          display:"flex",
+          justifyContent:"center",
+          alignItems:"Center",
+          color:"#fff",
+          fontSize:"60px",
+          marginTop:"50px",
+          flexDirection: "column",
+          gap:"20px"
+        }}>
+          <h3>{typeOfColor === "rgb" ? "RGB Color" : "Hex Color"}</h3>
+          <h1>{color}</h1>
         </div>
       </div>
     </div>
